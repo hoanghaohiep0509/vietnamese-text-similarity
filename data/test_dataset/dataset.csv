@@ -1,0 +1,26 @@
+id,text1,text2,label,category,source
+1,"Việt Nam là một quốc gia nằm ở Đông Nam Á. Thủ đô của Việt Nam là Hà Nội.","Việt Nam là nước thuộc khu vực Đông Nam Á với thủ đô là thành phố Hà Nội.",similar,geography,manual
+2,"Phở là món ăn truyền thống của Việt Nam, được làm từ bánh phở, nước dùng và thịt.","Món phở Việt Nam gồm có bánh phở, nước dùng đậm đà và các loại thịt bò hoặc gà.",similar,food,manual
+3,"Trí tuệ nhân tạo là một lĩnh vực của khoa học máy tính.","AI là ngành thuộc về computer science, nghiên cứu về máy móc thông minh.",similar,technology,manual
+4,"Hôm nay trời đẹp, tôi muốn đi dạo công viên.","Tôi muốn đi shopping vì hôm nay có sale lớn ở trung tâm thương mại.",different,activity,manual
+5,"Python là một ngôn ngữ lập trình mạnh mẽ và dễ học.","Python là ngôn ngữ lập trình phổ biến, syntax đơn giản và hiệu quả.",similar,programming,manual
+6,"Hà Nội là thủ đô của Việt Nam, nơi có nhiều di tích lịch sử.","Thành phố Hồ Chí Minh là thành phố lớn nhất Việt Nam về kinh tế.",different,geography,manual
+7,"Tôi thích đọc sách vào buổi tối trước khi đi ngủ.","Buổi tối tôi hay đọc sách để thư giãn trước khi ngủ.",similar,hobby,manual
+8,"Máy tính xách tay hiện đại có hiệu năng cao và pin bền.","Laptop ngày nay rất mạnh mẽ và thời lượng pin tốt.",similar,technology,manual
+9,"Tôi sẽ đi du lịch Đà Lạt vào cuối tuần này.","Cuối tuần tôi có kế hoạch học lập trình Python.",different,activity,manual
+10,"Bún bò Huế là món ăn đặc sản của miền Trung Việt Nam.","Bún bò Huế là đặc sản nổi tiếng của xứ Huế, miền Trung.",similar,food,manual
+11,"Thời tiết hôm nay rất nóng, nhiệt độ lên tới 35 độ C.","Hôm nay trời lạnh, nhiệt độ chỉ còn 15 độ C.",different,weather,manual
+12,"Học tiếng Anh giúp mở rộng cơ hội việc làm.","Biết tiếng Anh tạo ra nhiều cơ hội nghề nghiệp hơn.",similar,education,manual
+13,"React là một thư viện JavaScript để xây dựng giao diện người dùng.","React.js là library của JavaScript dùng để phát triển UI.",similar,programming,manual
+14,"Tôi thức dậy lúc 6 giờ sáng để tập thể dục.","Tối nay tôi sẽ đi xem phim với bạn bè.",different,activity,manual
+15,"Café là thức uống phổ biến nhất thế giới sau nước.","Cà phê là đồ uống được yêu thích thứ hai trên thế giới.",similar,beverage,manual
+16,"Machine Learning là một nhánh của trí tuệ nhân tạo.","ML là một phần của AI, tập trung vào việc học từ dữ liệu.",similar,technology,manual
+17,"Tôi đang làm việc tại công ty công nghệ ở Hà Nội.","Hiện tại tôi đang học tại đại học ở thành phố Hồ Chí Minh.",different,work,manual
+18,"Bánh mì Việt Nam được làm từ bánh mì baguette và nhân đa dạng.","Bánh mì VN có vỏ giòn kiểu Pháp với nhiều loại nhân phong phú.",similar,food,manual
+19,"Mùa xuân ở Việt Nam thường có nhiều mưa và ẩm ướt.","Mùa đông ở miền Bắc Việt Nam khá lạnh và khô ráo.",different,weather,manual
+20,"Docker giúp đóng gói ứng dụng và môi trường thành container.","Docker là công cụ containerization để đóng gói app và dependencies.",similar,technology,manual
+21,"Tôi thích nghe nhạc pop và rock.","Sở thích của tôi là nghe nhạc jazz và classical.",different,hobby,manual
+22,"Đại học Bách Khoa Hà Nội là trường đại học kỹ thuật hàng đầu.","HUST là một trong những trường kỹ thuật top đầu Việt Nam.",similar,education,manual
+23,"Tôi sống ở quận 1, thành phố Hồ Chí Minh.","Tôi sinh sống tại trung tâm Sài Gòn, quận 1.",similar,location,manual
+24,"Blockchain là công nghệ phân tán lưu trữ dữ liệu.","Công nghệ AI giúp máy tính có thể suy nghĩ như con người.",different,technology,manual
+25,"Tôi đang học Python để phát triển web với Django.","Hiện tại tôi đang nghiên cứu React để làm frontend.",different,programming,manualpython backend/main.py
