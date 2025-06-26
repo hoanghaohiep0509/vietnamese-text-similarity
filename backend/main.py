@@ -423,28 +423,11 @@ def get_labels():
 @app.route('/api/dataset', methods=['GET'])
 def get_dataset():
     try:
-        category = request.args.get('category')
-        label = request.args.get('label')
-        
-        df = pd.read_csv('../data/test_dataset/dataset.csv')
-        
-        if category:
-            df = df[df['category'] == category]
-        if label:
-            df = df[df['label'] == label]
-        # Convert DataFrame to list of dictionaries using to_dict('records')
-        result = df.to_dict(orient='records')
-        
-        return jsonify({
-            'status': 'success',
-            'data': result
-        })
+        df = pd.read_csv('data/test_dataset/dataset.csv')
+        return jsonify(df.to_dict('records'))
     except Exception as e:
-        print(f"Error loading dataset: {e}")
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     main()

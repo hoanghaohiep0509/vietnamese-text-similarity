@@ -6,6 +6,7 @@ import logging
 from typing import Dict, List, Any, Optional
 import time
 from functools import wraps
+import pandas as pd
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -89,6 +90,8 @@ class TextSimilarityAPI:
             'failed_requests': 0,
             'start_time': time.time()
         }
+        
+        self.datasets = self.load_datasets()  # Thay đổi tên method
         
         # Setup routes
         self.setup_routes()
@@ -262,6 +265,38 @@ class TextSimilarityAPI:
                 logger.error(f"Error in similarity calculation: {e}")
                 return jsonify({'error': str(e)}), 500
         
+        @self.app.route('/api/categories', methods=['GET'])
+        def get_categories():
+            """Get all unique categories from dataset"""
+            try:
+                categories = list(set(d.get('category') for d in self.datasets))
+                return jsonify({
+                    'status': 'success',
+                    'data': categories
+                })
+            except Exception as e:
+                logger.error(f"Error getting categories: {e}")
+                return jsonify({
+                    'status': 'error',
+                    'message': str(e)
+                }), 500
+
+        @self.app.route('/api/labels', methods=['GET'])
+        def get_labels():
+            """Get all unique labels from dataset"""
+            try:
+                labels = list(set(d.get('label') for d in self.datasets))
+                return jsonify({
+                    'status': 'success',
+                    'data': labels
+                })
+            except Exception as e:
+                logger.error(f"Error getting labels: {e}")
+                return jsonify({
+                    'status': 'error',
+                    'message': str(e)
+                }), 500
+
         @self.app.route('/api/methods', methods=['GET'])
         def get_available_methods():
             """Get available methods"""
@@ -289,23 +324,24 @@ class TextSimilarityAPI:
         @self.app.route('/api/dataset', methods=['GET'])
         @timing_decorator
         def get_dataset():
-            """Get dataset for frontend dropdown"""
+            """Get dataset from CSV file"""
             try:
-                # Sử dụng sample data thay vì load từ file để tránh lỗi
-                datasets = self.get_sample_datasets()
+                # Lọc theo category và label nếu được chỉ định
+                category = request.args.get('category')
+                label = request.args.get('label')
                 
-                # Format cho frontend
-                formatted_data = []
-                for dataset in datasets:
-                    formatted_data.append({
-                        'text1': dataset.get('text1', ''),
-                        'text2': dataset.get('text2', ''),
-                        'label': dataset.get('label', 0)
-                    })
+                # Lấy dữ liệu từ datasets đã load
+                filtered_data = self.datasets.copy()
+                
+                if category:
+                    filtered_data = [d for d in filtered_data if d.get('category') == category]
+                if label:
+                    filtered_data = [d for d in filtered_data if d.get('label') == label]
                 
                 return jsonify({
                     'status': 'success',
-                    'data': formatted_data[:50]  # Giới hạn 50 items
+                    'data': filtered_data,
+                    'total': len(filtered_data)
                 })
                 
             except Exception as e:
@@ -314,19 +350,21 @@ class TextSimilarityAPI:
                     'status': 'error',
                     'message': str(e)
                 }), 500
-        
+
         @self.app.route('/api/datasets/<int:dataset_id>', methods=['GET'])
         @timing_decorator
         def get_dataset_by_id(dataset_id):
             """Get specific dataset by ID"""
             try:
-                datasets = self.get_sample_datasets()
-                dataset = next((d for d in datasets if d['id'] == dataset_id), None)
+                dataset = next((d for d in self.datasets if d['id'] == dataset_id), None)
                 
                 if not dataset:
                     return jsonify({'error': 'Dataset not found'}), 404
                 
-                return jsonify(dataset)
+                return jsonify({
+                    'status': 'success',
+                    'data': dataset
+                })
                 
             except Exception as e:
                 logger.error(f"Error loading dataset {dataset_id}: {e}")
@@ -505,92 +543,31 @@ class TextSimilarityAPI:
                 }
             })
 
-    def load_test_datasets(self):
-        """Load test datasets from data/test_dataset"""
+    def load_datasets(self):
+        """Load datasets from CSV file"""
         try:
-            import pandas as pd
-            import os
-            
-            # Path to dataset
-            dataset_path = os.path.join(
+            # Đường dẫn đến file CSV
+            csv_path = os.path.join(
                 os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                 'data', 'test_dataset', 'dataset.csv'
             )
             
-            if not os.path.exists(dataset_path):
-                # Return sample data if file doesn't exist
-                return self.get_sample_datasets()
+            if not os.path.exists(csv_path):
+                logger.error(f"Dataset file not found: {csv_path}")
+                return []
             
-            # Load CSV
-            df = pd.read_csv(dataset_path, encoding='utf-8')
+            # Đọc CSV
+            df = pd.read_csv(csv_path)
             
-            datasets = []
-            for _, row in df.iterrows():
-                datasets.append({
-                    'id': int(row.get('id', len(datasets) + 1)),
-                    'text1': str(row.get('text1', '')),
-                    'text2': str(row.get('text2', '')),
-                    'label': row.get('label', 'unknown'),  # similar/different
-                    'category': row.get('category', 'general'),
-                    'source': row.get('source', 'test_dataset')
-                })
-            
+            # Chuyển DataFrame thành list of dictionaries
+            datasets = df.to_dict('records')
+            logger.info(f"Successfully loaded {len(datasets)} datasets from CSV")
             return datasets
             
         except Exception as e:
             logger.error(f"Error loading datasets: {e}")
-            return self.get_sample_datasets()
-    
-    def get_sample_datasets(self):
-        """Get sample datasets if real data is not available"""
-        return [
-            {
-                'id': 1,
-                'text1': "Việt Nam là một quốc gia nằm ở Đông Nam Á. Thủ đô của Việt Nam là Hà Nội.",
-                'text2': "Việt Nam là nước thuộc khu vực Đông Nam Á với thủ đô là thành phố Hà Nội.",
-                'label': 'similar',
-                'category': 'geography',
-                'source': 'sample'
-            },
-            {
-                'id': 2,
-                'text1': "Phở là món ăn truyền thống của Việt Nam, được làm từ bánh phở, nước dùng và thịt.",
-                'text2': "Món phở Việt Nam gồm có bánh phở, nước dùng đậm đà và các loại thịt bò hoặc gà.",
-                'label': 'similar',
-                'category': 'food',
-                'source': 'sample'
-            },
-            {
-                'id': 3,
-                'text1': "Trí tuệ nhân tạo là một lĩnh vực của khoa học máy tính.",
-                'text2': "AI là ngành thuộc về computer science, nghiên cứu về máy móc thông minh.",
-                'label': 'similar',
-                'category': 'technology',
-                'source': 'sample'
-            },
-            {
-                'id': 4,
-                'text1': "Hôm nay trời đẹp, tôi muốn đi dạo công viên.",
-                'text2': "Tôi muốn đi shopping vì hôm nay có sale lớn ở trung tâm thương mại.",
-                'label': 'different',
-                'category': 'activity',
-                'source': 'sample'
-            },
-            {
-                'id': 5,
-                'text1': "Python là một ngôn ngữ lập trình mạnh mẽ và dễ học.",
-                'text2': "Python là ngôn ngữ lập trình phổ biến, syntax đơn giản và hiệu quả.",
-                'label': 'similar',
-                'category': 'programming',
-                'source': 'sample'
-            }
-        ]
-    
-    def get_dataset_categories(self, datasets):
-        """Get unique categories from datasets"""
-        categories = list(set(d.get('category', 'general') for d in datasets))
-        return categories
-    
+            return []
+
     def get_method_category(self, method):
         """Get category for a similarity method"""
         for category, methods in self.similarity_calculator.method_categories.items():

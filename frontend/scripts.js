@@ -118,20 +118,23 @@ class TextSimilarityApp {
         if (!isNaN(index) && this.datasets[index]) {
           const item = this.datasets[index];
 
-          // Update preview
+          // Cập nhật nội dung cho cả text area và preview
+          const text1 = document.getElementById("text1");
+          const text2 = document.getElementById("text2");
           const preview1 = document.getElementById("preview-text1");
           const preview2 = document.getElementById("preview-text2");
 
+          // Cập nhật text areas
+          if (text1) text1.value = item.text1;
+          if (text2) text2.value = item.text2;
+
+          // Cập nhật preview
           if (preview1) preview1.textContent = item.text1;
           if (preview2) preview2.textContent = item.text2;
 
-          // Show preview section
+          // Hiển thị preview section
           const previewSection = document.getElementById("dataset-preview");
           if (previewSection) previewSection.style.display = "block";
-        } else {
-          // Hide preview section if no valid selection
-          const previewSection = document.getElementById("dataset-preview");
-          if (previewSection) previewSection.style.display = "none";
         }
       });
     }
@@ -255,6 +258,34 @@ class TextSimilarityApp {
         index + 1
       }: ${text1Preview} | ${text2Preview}`;
       datasetSelect.appendChild(option);
+    });
+  }
+
+  // Sửa lại hàm populateDatasetSelect
+  populateDatasetSelect() {
+    const select = document.getElementById("dataset-select");
+    if (!select) {
+      console.error("Dataset select element not found");
+      return;
+    }
+
+    // Clear existing options
+    select.innerHTML = '<option value="">-- Chọn cặp văn bản --</option>';
+
+    // Add new options
+    this.datasets.forEach((item, index) => {
+      const option = document.createElement("option");
+      option.value = index.toString(); // Đảm bảo value là string
+      const text1Preview =
+        item.text1.substring(0, 30) + (item.text1.length > 30 ? "..." : "");
+      const text2Preview =
+        item.text2.substring(0, 30) + (item.text2.length > 30 ? "..." : "");
+      option.textContent = `Cặp ${
+        index + 1
+        // }: ${text1Preview} ↔ ${text2Preview}`;
+      }: ${text1Preview} | ${text2Preview}`;
+      select.appendChild(option);
+      console.log(`Added option ${index}:`, option.value, option.textContent); // Debug log
     });
   }
 
@@ -610,3 +641,131 @@ class TextSimilarityApp {
 document.addEventListener("DOMContentLoaded", () => {
   window.app = new TextSimilarityApp();
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Tải dữ liệu từ dataset.csv
+  fetch("/data/test_dataset/dataset.csv")
+    .then((response) => response.text())
+    .then((csv) => {
+      const data = parseCSV(csv);
+      populateDatasetSelections(data);
+    });
+});
+
+function populateDatasetSelections(data) {
+  // Populate categories
+  const categories = [...new Set(data.map((item) => item.category))];
+  const categorySelect = document.getElementById("category-select");
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = capitalizeFirstLetter(category);
+    categorySelect.appendChild(option);
+  });
+
+  // Populate labels
+  const labels = [...new Set(data.map((item) => item.label))];
+  const labelSelect = document.getElementById("label-select");
+  labels.forEach((label) => {
+    const option = document.createElement("option");
+    option.value = label;
+    option.textContent = capitalizeFirstLetter(label);
+    labelSelect.appendChild(option);
+  });
+
+  // Populate dataset pairs
+  const datasetSelect = document.getElementById("dataset-select");
+  data.forEach((item, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `Cặp ${item.id}: ${truncateText(
+      item.text1
+    )} - ${truncateText(item.text2)}`;
+    datasetSelect.appendChild(option);
+  });
+
+  // Handle dataset selection
+  datasetSelect.addEventListener("change", function () {
+    const selectedData = data[this.value];
+    if (selectedData) {
+      document.getElementById("preview-text1").textContent = selectedData.text1;
+      document.getElementById("preview-text2").textContent = selectedData.text2;
+      document.getElementById("preview-category").textContent =
+        selectedData.category;
+      document.getElementById("preview-label").textContent = selectedData.label;
+      document.getElementById("dataset-preview").style.display = "block";
+    }
+  });
+
+  // Handle category filter
+  categorySelect.addEventListener("change", function () {
+    filterDataset(data);
+  });
+
+  // Handle label filter
+  labelSelect.addEventListener("change", function () {
+    filterDataset(data);
+  });
+}
+
+function filterDataset(data) {
+  const selectedCategory = document.getElementById("category-select").value;
+  const selectedLabel = document.getElementById("label-select").value;
+  const datasetSelect = document.getElementById("dataset-select");
+
+  // Clear current options
+  datasetSelect.innerHTML = '<option value="">-- Chọn cặp văn bản --</option>';
+
+  // Filter and populate
+  data
+    .filter(
+      (item) =>
+        (!selectedCategory || item.category === selectedCategory) &&
+        (!selectedLabel || item.label === selectedLabel)
+    )
+    .forEach((item, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = `Cặp ${item.id}: ${truncateText(
+        item.text1
+      )} - ${truncateText(item.text2)}`;
+      datasetSelect.appendChild(option);
+    });
+}
+
+const truncateText = (text, length = 50) =>
+  !text
+    ? ""
+    : text.toString().length > length
+    ? text.toString().substring(0, length).trim() + "..."
+    : text.toString();
+
+// function truncateText(text, length = 50) {
+//   return text.length > length ? text.substring(0, length) + "..." : text;
+// }
+
+// function capitalizeFirstLetter(string) {
+//   return string.charAt(0).toUpperCase() + string.slice(1);
+// }
+
+function capitalizeFirstLetter(string) {
+  if (!string) return ""; // Xử lý trường hợp chuỗi rỗng hoặc undefined
+  return (
+    string.toString().charAt(0).toUpperCase() +
+    string.toString().slice(1).toLowerCase()
+  );
+}
+
+function parseCSV(csv) {
+  // Add CSV parsing logic here
+  const rows = csv.split("\n");
+  const headers = rows[0].split(",");
+  const data = rows.slice(1).map((row) => {
+    const values = row.split(",");
+    return headers.reduce((acc, header, index) => {
+      acc[header] = values[index];
+      return acc;
+    }, {});
+  });
+  return data;
+}

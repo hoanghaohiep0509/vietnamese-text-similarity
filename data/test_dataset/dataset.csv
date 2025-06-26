@@ -23,4 +23,29 @@ id,text1,text2,label,category,source
 22,"Đại học Bách Khoa Hà Nội là trường đại học kỹ thuật hàng đầu.","HUST là một trong những trường kỹ thuật top đầu Việt Nam.",similar,education,manual
 23,"Tôi sống ở quận 1, thành phố Hồ Chí Minh.","Tôi sinh sống tại trung tâm Sài Gòn, quận 1.",similar,location,manual
 24,"Blockchain là công nghệ phân tán lưu trữ dữ liệu.","Công nghệ AI giúp máy tính có thể suy nghĩ như con người.",different,technology,manual
-25,"Tôi đang học Python để phát triển web với Django.","Hiện tại tôi đang nghiên cứu React để làm frontend.",different,programming,manualpython backend/main.py
+25,"Tôi đang học Python để phát triển web với Django.","Hiện tại tôi đang nghiên cứu React để làm frontend.",different,programming,manual
+26,"Cơm tấm Sài Gòn là món ăn đặc trưng của miền Nam.","Cơm tấm là món ăn nổi tiếng và phổ biến ở Sài Gòn, gồm cơm với sườn nướng.",similar,food,manual
+27,"Deep Learning là kỹ thuật học sâu trong AI.","Deep Learning sử dụng mạng neural nhiều lớp để học từ dữ liệu.",similar,technology,manual
+28,"Chợ Bến Thành là điểm du lịch nổi tiếng ở Sài Gòn.","Hồ Gươm là biểu tượng của Hà Nội, thu hút nhiều khách du lịch.",different,tourism,manual
+29,"Git là hệ thống quản lý phiên bản phân tán.","Git là công cụ version control system phổ biến trong phát triển phần mềm.",similar,programming,manual
+30,"Tôi thường tập yoga vào buổi sáng để thư giãn.","Mỗi sáng tôi dành thời gian tập yoga để cải thiện sức khỏe và tinh thần.",similar,health,manual
+31,"Hệ điều hành Linux là mã nguồn mở và miễn phí.","Windows là hệ điều hành phổ biến nhất trên máy tính cá nhân.",different,technology,manual
+32,"Việt Nam có 54 dân tộc anh em cùng chung sống.","Đất nước Việt Nam có 54 dân tộc với văn hóa đa dạng.",similar,culture,manual
+33,"MongoDB là cơ sở dữ liệu NoSQL phổ biến.","PostgreSQL là hệ quản trị cơ sở dữ liệu quan hệ mạnh mẽ.",different,database,manual
+34,"Tết Nguyên Đán là ngày lễ lớn nhất của Việt Nam.","Tết cổ truyền là dịp lễ quan trọng nhất trong năm của người Việt.",similar,culture,manual
+35,"Cà phê sữa đá là thức uống đặc trưng của Việt Nam.","Trà đá vỉa hè là nét văn hóa độc đáo của người Việt Nam.",different,beverage,manual
+36,"HTML và CSS là nền tảng của web development.","HTML/CSS là các công nghệ cơ bản để xây dựng trang web.",similar,programming,manual
+37,"Phong cảnh Vịnh Hạ Long rất đẹp và hùng vĩ.","Vịnh Hạ Long được UNESCO công nhận là di sản thiên nhiên thế giới.",similar,tourism,manual
+38,"Tôi làm việc remote cho công ty nước ngoài.","Tôi đang làm việc tại văn phòng ở trung tâm thành phố.",different,work,manual
+39,"Áo dài là trang phục truyền thống của Việt Nam.","Áo dài là biểu tượng văn hóa và trang phục dân tộc Việt.",similar,culture,manual
+40,"TypeScript là JavaScript với kiểu dữ liệu tĩnh.","TypeScript là superset của JavaScript, thêm static typing.",similar,programming,manual
+41,"Hội An là thành phố cổ nổi tiếng thế giới.","Hội An được UNESCO công nhận là di sản văn hóa thế giới.",similar,tourism,manual
+42,"Tôi thích nấu ăn vào cuối tuần để thư giãn.","Cuối tuần tôi thường chơi game để giải trí.",different,hobby,manual
+43,"Kubernetes là nền tảng điều phối container.","K8s là platform để orchestrate và quản lý containers.",similar,technology,manual
+44,"Cà phê trứng là đặc sản của Hà Nội.","Cà phê trứng là món uống độc đáo của thủ đô, được làm từ cà phê và trứng đánh bông.",similar,beverage,manual
+45,"Tôi đang học tiếng Nhật để đi du học.","Tôi đang học lập trình để chuyển nghề sang IT.",different,education,manual
+46,"Mì Quảng là món ăn đặc trưng của Quảng Nam.","Mì Quảng là đặc sản nổi tiếng của vùng đất Quảng, có nước dùng đặc và nhiều topping.",similar,food,manual
+47,"NextJS là framework phát triển web với React.","Next.js là React framework cho production, hỗ trợ SSR và static generation.",similar,programming,manual
+48,"Tôi thích đi leo núi vào cuối tuần.","Tôi yêu thích các hoạt động ngoài trời như leo núi mỗi cuối tuần.",similar,hobby,manual
+49,"Chùa Một Cột là di tích lịch sử của Hà Nội.","Nhà thờ Đức Bà là công trình kiến trúc nổi tiếng của Sài Gòn.",different,architecture,manual
+50,"Việt Nam có nhiều bãi biển đẹp nổi tiếng.","Việt Nam sở hữu đường bờ biển dài với nhiều bãi tắm tuyệt đẹp.",similar,tourism,manual
